@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import connectDB from "../../../../lib/mongodb";
 import Post from "../../../../models/Post";
 import { formatDate } from "../../../../lib/utils";
-
+import Category from "../../../../models/Category";
 export const revalidate = 30;
 
 export async function generateMetadata({ params }) {
@@ -47,6 +47,7 @@ async function getPost(slug) {
 }
 
 async function getRelated(categoryId, currentSlug) {
+  await connectDB(); // ← yeh add karo
   return Post.find({ category: categoryId, slug: { $ne: currentSlug }, published: true })
     .sort({ createdAt: -1 })
     .limit(3)
