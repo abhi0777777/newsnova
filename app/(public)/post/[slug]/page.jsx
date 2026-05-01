@@ -1,16 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import connectDB from "../../../../lib/mongodb";
+import connectDB from "../../../../lib/mongodb"; // ← sahi naam
 import Post from "../../../../models/Post";
+import Category from "../../../../models/Category"; // ← explicit import zaroori
+
 import { formatDate } from "../../../../lib/utils";
-import Category from "../../../../models/Category";
-export const revalidate = 30;
+
+export const dynamic = "force-dynamic"; // ← revalidate=30 hatao, yeh lagao
 
 export async function generateMetadata({ params }) {
   const post = await getPost(params.slug);
   if (!post) return {};
-  
+
   return {
     title: post.title,
     description: post.excerpt || post.title,
@@ -34,26 +36,39 @@ export async function generateMetadata({ params }) {
 }
 
 async function getPost(slug) {
-  await connectDB();
-  // Use findOneAndUpdate to increment views atomically
-  const post = await Post.findOneAndUpdate(
-    { slug, published: true },
-    { $inc: { views: 1 } },
-    { new: true }
-  )
-    .populate("category", "name slug color")
-    .lean();
-  return post;
+  try {
+    await connectDB();
+    const post = await Post.findOneAndUpdate(
+      { slug, published: true },
+      { $inc: { views: 1 } },
+      { new: true }
+    )
+      .populate("category", "name slug color")
+      .lean();
+    return post;
+  } catch (err) {
+    console.error("getPost error:", err);
+    return null;
+  }
 }
 
 async function getRelated(categoryId, currentSlug) {
-  await connectDB(); // ← yeh add karo
-  return Post.find({ category: categoryId, slug: { $ne: currentSlug }, published: true })
-    .sort({ createdAt: -1 })
-    .limit(3)
-    .select("title slug coverImage readTime createdAt")
-    .populate("category", "name color")
-    .lean();
+  try {
+    await connectDB();
+    return await Post.find({
+      category: categoryId,
+      slug: { $ne: currentSlug },
+      published: true,
+    })
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .select("title slug coverImage readTime createdAt")
+      .populate("category", "name color")
+      .lean();
+  } catch (err) {
+    console.error("getRelated error:", err);
+    return [];
+  }
 }
 
 export default async function PostPage({ params }) {
@@ -88,7 +103,6 @@ export default async function PostPage({ params }) {
 
       <hr className="divider-rule" />
 
-      {/* Article container */}
       <div
         style={{
           display: "grid",
@@ -97,15 +111,10 @@ export default async function PostPage({ params }) {
         }}
       >
         <article style={{ gridColumn: 2 }}>
-          {/* Category */}
-          <span
-            className="category-badge"
-            style={{ background: post.category.color }}
-          >
+          <span className="category-badge" style={{ background: post.category.color }}>
             {post.category.name}
           </span>
 
-          {/* Title */}
           <h1
             style={{
               fontFamily: "'Playfair Display', serif",
@@ -119,7 +128,6 @@ export default async function PostPage({ params }) {
             {post.title}
           </h1>
 
-          {/* Meta */}
           <div
             style={{
               display: "flex",
@@ -137,7 +145,6 @@ export default async function PostPage({ params }) {
             <span>👁 {post.views} views</span>
           </div>
 
-          {/* Cover image */}
           {post.coverImage && (
             <div
               style={{
@@ -160,7 +167,6 @@ export default async function PostPage({ params }) {
             </div>
           )}
 
-          {/* Excerpt */}
           {post.excerpt && (
             <p
               style={{
@@ -177,13 +183,11 @@ export default async function PostPage({ params }) {
             </p>
           )}
 
-          {/* Content */}
           <div
             className="post-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          {/* Tags */}
           {post.tags?.length > 0 && (
             <div
               style={{
@@ -216,7 +220,6 @@ export default async function PostPage({ params }) {
         </article>
       </div>
 
-      {/* Related posts */}
       {related.length > 0 && (
         <section style={{ marginTop: "4rem" }}>
           <hr className="divider-rule" />
