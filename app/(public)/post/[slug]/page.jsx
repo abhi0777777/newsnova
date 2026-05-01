@@ -10,7 +10,8 @@ import { formatDate } from "../../../../lib/utils";
 export const dynamic = "force-dynamic"; // ← revalidate=30 hatao, yeh lagao
 
 export async function generateMetadata({ params }) {
-  const post = await getPost(params.slug);
+    const { slug } = await params; // ← await karo
+  const post = await getPost(slug);
   if (!post) return {};
 
   return {
@@ -72,9 +73,9 @@ async function getRelated(categoryId, currentSlug) {
 }
 
 export default async function PostPage({ params }) {
-  const post = await getPost(params.slug);
-  if (!post) notFound();
-
+  const { slug } = await params; // ← await karo
+  const post = await getPost(slug);
+  if (!post) return {};
   const related = await getRelated(post.category._id, post.slug);
 
   return (
