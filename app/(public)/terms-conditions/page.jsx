@@ -1,5 +1,13 @@
-export const metadata = { title: "Terms & Conditions" };
-
+export const metadata = {
+  title: "Terms & Conditions | NewsNova",
+  description: "Review NewsNova's Terms & Conditions before using our platform. Understand your rights, content usage policies and our commitment to fair, responsible journalism.",
+  openGraph: {
+    title: "Terms & Conditions | NewsNova",
+    description: "NewsNova ke terms and conditions.",
+    url: "https://newsnova.online/terms-conditions",
+    siteName: "NewsNova",
+  },
+};
 export default function TermsConditions() {
   const sections = [
     {

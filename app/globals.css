@@ -15,13 +15,9 @@
   --accent-gold: #d4a017;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--paper);
@@ -32,41 +28,49 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== TYPOGRAPHY ===== */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", Georgia, serif;
   line-height: 1.2;
 }
 
 /* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--paper-warm); }
 ::-webkit-scrollbar-thumb { background: var(--paper-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
 
 /* ===== SELECTION ===== */
 ::selection { background: var(--accent-gold); color: var(--ink); }
 
-/* ===== NEWSPAPER DIVIDER ===== */
+/* ===== DIVIDERS ===== */
 .divider-rule {
   border: none;
   border-top: 3px double var(--ink);
   margin: 1.5rem 0;
 }
-
 .divider-thin {
   border: none;
   border-top: 1px solid var(--paper-border);
 }
 
-/* ===== POST CONTENT STYLES ===== */
+/* ===== SKELETON SHIMMER ===== */
+@keyframes shimmer {
+  0% { background-position: -700px 0; }
+  100% { background-position: 700px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #ede8e1 25%, #f5f0e8 50%, #ede8e1 75%);
+  background-size: 700px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 4px;
+}
+
+/* ===== POST CONTENT ===== */
 .post-content {
   font-family: "DM Sans", sans-serif;
   font-size: 1.0625rem;
   line-height: 1.8;
   color: var(--ink);
 }
-
 .post-content h2 {
   font-family: "Playfair Display", serif;
   font-size: 1.6rem;
@@ -75,24 +79,15 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 2px solid var(--paper-border);
   padding-bottom: 0.4rem;
 }
-
 .post-content h3 {
   font-family: "Playfair Display", serif;
   font-size: 1.25rem;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
 }
-
-.post-content p {
-  margin-bottom: 1.4rem;
-}
-
-.post-content ul, .post-content ol {
-  margin: 1rem 0 1.4rem 1.5rem;
-}
-
+.post-content p { margin-bottom: 1.4rem; }
+.post-content ul, .post-content ol { margin: 1rem 0 1.4rem 1.5rem; }
 .post-content li { margin-bottom: 0.4rem; }
-
 .post-content blockquote {
   border-left: 4px solid var(--accent-red);
   margin: 1.5rem 0;
@@ -102,20 +97,8 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
 }
-
-.post-content a {
-  color: var(--accent-red);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.post-content img {
-  max-width: 100%;
-  border-radius: 4px;
-  margin: 1.5rem auto;
-  display: block;
-}
-
+.post-content a { color: var(--accent-red); text-decoration: underline; text-underline-offset: 3px; }
+.post-content img { max-width: 100%; border-radius: 4px; margin: 1.5rem auto; display: block; }
 .post-content code {
   font-family: "DM Mono", monospace;
   background: var(--paper-warm);
@@ -123,7 +106,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
   font-size: 0.875em;
 }
-
 .post-content pre {
   background: var(--ink);
   color: var(--paper);
@@ -132,20 +114,10 @@ h1, h2, h3, h4, h5, h6 {
   overflow-x: auto;
   margin: 1.5rem 0;
 }
+.post-content pre code { background: none; color: inherit; padding: 0; }
 
-.post-content pre code {
-  background: none;
-  color: inherit;
-  padding: 0;
-}
-
-/* ===== TIPTAP EDITOR ===== */
-.ProseMirror {
-  outline: none;
-  min-height: 300px;
-  padding: 1rem;
-}
-
+/* ===== TIPTAP ===== */
+.ProseMirror { outline: none; min-height: 300px; padding: 1rem; }
 .ProseMirror p.is-editor-empty:first-child::before {
   color: #aaa;
   content: attr(data-placeholder);
@@ -159,14 +131,10 @@ h1, h2, h3, h4, h5, h6 {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-.fade-up {
-  animation: fadeUp 0.5s ease forwards;
-}
-
-.fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.5s; }
-.fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.5s; }
-.fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.5s; }
+.fade-up { animation: fadeUp 0.5s ease forwards; }
+.fade-up-1 { opacity: 0; animation: fadeUp 0.5s ease 0.1s forwards; }
+.fade-up-2 { opacity: 0; animation: fadeUp 0.5s ease 0.2s forwards; }
+.fade-up-3 { opacity: 0; animation: fadeUp 0.5s ease 0.3s forwards; }
 
 /* ===== CATEGORY BADGE ===== */
 .category-badge {
@@ -183,10 +151,48 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== CARD HOVER ===== */
-.post-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.post-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.post-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(15,14,13,0.1); }
+
+/* ===== RESPONSIVE GRID ===== */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
-.post-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(15,14,13,0.1);
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 900px) {
+  .posts-grid { grid-template-columns: repeat(2, 1fr); }
+  .featured-grid { grid-template-columns: 1fr; }
+  .featured-img { height: 260px !important; }
+  .featured-content { padding: 1.5rem !important; }
+  .post-grid-2col { grid-template-columns: 1fr !important; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+    .post-content {
+    padding: 0 1rem;
+    overflow-x: hidden;
+  }
+  
+  .post-content img {
+    width: 100%;
+    height: auto;
+  }
+  .posts-grid { grid-template-columns: 1fr; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .page-container { padding: 0 1rem 3rem !important; }
+  .post-title { font-size: 1.8rem !important; }
+  .admin-grid { grid-template-columns: 1fr !important; }
+  .admin-btns { flex-direction: column !important; }
+  .navbar-date { display: none !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
 }

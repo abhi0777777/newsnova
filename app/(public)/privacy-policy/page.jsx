@@ -1,5 +1,13 @@
-export const metadata = { title: "Privacy Policy" };
-
+export const metadata = {
+  title: "Privacy Policy | NewsNova",
+  description: "Read NewsNova's Privacy Policy to understand how we collect, use and protect your personal data. Your privacy is our priority — transparent, simple and trustworthy.",
+  openGraph: {
+    title: "Privacy Policy | NewsNova",
+    description: "NewsNova ki privacy policy.",
+    url: "https://newsnova.online/privacy-policy",
+    siteName: "NewsNova",
+  },
+};
 export default function PrivacyPolicy() {
   const sections = [
     {

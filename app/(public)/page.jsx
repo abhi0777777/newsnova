@@ -1,10 +1,10 @@
-import PostCard from "../../components/PostCard";
-import CategoryFilter from "../../components/CategoryFilter";
-import connectDB from "../../lib/mongodb";
-import Post from "../../models/Post";
-import Category from "../../models/Category";
+import PostCard from "@/components/PostCard";
+import CategoryFilter from "@/components/CategoryFilter";
+import connectDB from "@/lib/mongodb";
+import Post from "@/models/Post";
+import Category from "@/models/Category";
 
-export const revalidate = 60; // ISR: revalidate every 60 seconds
+export const revalidate = 60;
 
 async function getData() {
   await connectDB();
@@ -26,24 +26,14 @@ export default async function HomePage() {
   const rest = posts.slice(1);
 
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.25rem 4rem" }}>
-      {/* Category filter */}
+    <div className="page-container" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.25rem 4rem" }}>
       <CategoryFilter categories={categories} active="all" />
       <hr className="divider-rule" />
 
-      {/* Featured post */}
+      {/* Featured */}
       {featured && (
         <section style={{ marginBottom: "2.5rem" }}>
-          <div
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: "0.65rem",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "var(--ink-muted)",
-              marginBottom: "0.75rem",
-            }}
-          >
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--ink-muted)", marginBottom: "0.75rem" }}>
             — Top Story
           </div>
           <PostCard post={featured} featured />
@@ -52,41 +42,20 @@ export default async function HomePage() {
 
       <hr className="divider-thin" style={{ marginBottom: "2rem" }} />
 
-      {/* Grid of remaining posts */}
+      {/* Grid */}
       {rest.length > 0 ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
-            gap: "1.5rem",
-          }}
-        >
+        <div className="posts-grid">
           {rest.map((post, i) => (
-            <div
-              key={post._id}
-              className={`fade-up-delay-${Math.min(i % 3 + 1, 3)}`}
-            >
+            <div key={post._id} className={`fade-up-${Math.min(i % 3 + 1, 3)}`}>
               <PostCard post={post} />
             </div>
           ))}
         </div>
-      ) : (
-        !featured && (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "4rem 0",
-              color: "var(--ink-muted)",
-            }}
-          >
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem" }}>
-              No stories yet.
-            </p>
-            <p style={{ fontSize: "0.875rem", marginTop: "0.5rem" }}>
-              Check back soon.
-            </p>
-          </div>
-        )
+      ) : !featured && (
+        <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--ink-muted)" }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.5rem" }}>No stories yet.</p>
+          <p style={{ fontSize: "0.875rem", marginTop: "0.5rem" }}>Check back soon.</p>
+        </div>
       )}
     </div>
   );
