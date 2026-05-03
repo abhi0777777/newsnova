@@ -54,7 +54,7 @@ export default async function PostPage({ params }) {
   const related = await getRelated(post.category._id, post.slug);
 
   return (
-    <div className="page-container" style={{ maxWidth: 1100, margin: "0 auto", padding: "0 1.25rem 5rem" }}>
+    <div className="page-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.25rem 5rem" }}>
       {/* Breadcrumb */}
       <nav style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.7rem", color: "var(--ink-muted)", padding: "1rem 0 0.5rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
         <Link href="/" style={{ color: "var(--ink-muted)", textDecoration: "none" }}>Home</Link>
