@@ -6,11 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "next lint",
     "seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
-    "@types/dompurify": "^3.0.5",
     "date-fns": "^4.1.0",
     "dompurify": "^3.4.3",
     "framer-motion": "^12.38.0",
